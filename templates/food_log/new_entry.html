@@ -1,0 +1,11 @@
+{% extends 'food_log/base.html' %}
+
+{% block content %}
+  <h2>Create New Food Entry</h2>
+
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+{% endblock %}

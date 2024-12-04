@@ -1,0 +1,26 @@
+{% extends 'food_log/base.html' %}
+
+<h2>Food Log Entries for {{ selected_date }}</h2>
+<div id="entries-list">
+    {% for entry in food_log_entries %}
+        <div class="food-log-entry">
+            <p><strong>Date:</strong> {{ entry.date }}</p>
+            <p><strong>Meal Type:</strong> {{ entry.meal_type }}</p>
+            <p><strong>Food Item:</strong> {{ entry.food_item }}</p>
+            <p><strong>Calories:</strong> {{ entry.calories }}</p>
+            <p><strong>Notes:</strong> {{ entry.notes }}</p>
+            <form method="post" action="{% url 'delete_entry' entry.id %}">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+    {% endfor %}
+</div>
+
+{% if total_calories > 0 %}
+<div id="total-calories">
+    <h3>Total Calories: {{ total_calories }}</h3>
+</div>
+{% else %}
+<p>No entries found for this date.</p>
+{% endif %}

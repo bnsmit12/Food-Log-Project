@@ -1,0 +1,43 @@
+{% extends 'food_log/base.html' %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-center">Food Log Entries for {{ entries.0.date|date:"F j, Y" }}</h2>
+        <a href="{% url 'calendar' %}" class="btn btn-secondary">Back to Calendar</a>
+    </div>
+
+    {% if entries %}
+        <div class="list-group">
+            {% for entry in entries %}
+                <div class="list-group-item">
+                    <h5 class="mb-1">
+                        <span class="text-primary">{{ entry.meal_type|title }}</span> -
+                        <strong>{{ entry.food_item }}</strong>
+                    </h5>
+                    <p class="mb-1">
+                        <strong>Calories:</strong> {{ entry.calories }}
+                    </p>
+                    {% if entry.notes %}
+                        <p class="mb-1">
+                            <strong>Notes:</strong> {{ entry.notes }}
+                        </p>
+                    {% endif %}
+                    <small class="text-muted">
+                        <strong>Date:</strong> {{ entry.date|date:"F j, Y" }}
+                    </small>
+                    <form action="{% url 'delete_entry' entry.id %}" method="post" class="d-inline-block float-end ms-3">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                    </form>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="alert alert-info text-center">
+            <h4>Total Calories: <strong>{{ total_calories }}</strong></h4>
+        </div>
+    {% else %}
+        <p class="text-center text-muted">No entries found for this date.</p>
+    {% endif %}
+</div>
+{% endblock %}
